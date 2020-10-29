@@ -1629,7 +1629,7 @@ int32_t cam_sensor_driver_cmd(struct cam_sensor_ctrl_t *s_ctrl,
 
 		if ((s_ctrl->is_probe_succeed == 0) ||
 			(s_ctrl->sensor_state != CAM_SENSOR_INIT)) {
- 			CAM_WARN(CAM_SENSOR,
+			CAM_WARN(CAM_SENSOR,
 				"sdbg Not in right state to aquire %d sensor_id: 0x%x sensor_slave_addr:0x%x ",
 				s_ctrl->sensor_state,
 				s_ctrl->sensordata->slave_info.sensor_id,
@@ -1803,7 +1803,7 @@ int32_t cam_sensor_driver_cmd(struct cam_sensor_ctrl_t *s_ctrl,
 			"sdbg CAM_START_DEV Called, sensor_id:0x%x,sensor_slave_addr:0x%x [start]",
 			s_ctrl->sensordata->slave_info.sensor_id,
 			s_ctrl->sensordata->slave_info.sensor_slave_addr);
-		
+
 		if ((s_ctrl->sensor_state == CAM_SENSOR_INIT) ||
 			(s_ctrl->sensor_state == CAM_SENSOR_START)) {
 			rc = -EINVAL;
@@ -1851,7 +1851,7 @@ int32_t cam_sensor_driver_cmd(struct cam_sensor_ctrl_t *s_ctrl,
 			"sdbg CAM_STOP_DEV Called, sensor_id:0x%x,sensor_slave_addr:0x%x [start]",
 			s_ctrl->sensordata->slave_info.sensor_id,
 			s_ctrl->sensordata->slave_info.sensor_slave_addr);
-		
+
 		if (s_ctrl->sensor_state != CAM_SENSOR_START) {
 			rc = -EINVAL;
 			CAM_WARN(CAM_SENSOR,
