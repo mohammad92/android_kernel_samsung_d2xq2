@@ -790,6 +790,11 @@ typedef enum {
 	S2MU106_IRQ_SKIP,
 } t_irq_status;
 
+typedef enum {
+	S2MU106_AFC_5V_to_9V,
+	S2MU106_AFC_9V_to_5V,
+} t_afc_vol_change;
+
 /* muic chip specific internal data structure
 * that setted at muic-xxxx.c file
 */
@@ -832,6 +837,7 @@ struct s2mu106_muic_data {
 	int irq_mrxtrf;
 	int irq_mrxrdy;
 	struct power_supply *psy_pm;
+	struct power_supply *psy_chg;
 #endif
 	bool afc_check;
 #if defined(CONFIG_HV_MUIC_S2MU106_AFC)

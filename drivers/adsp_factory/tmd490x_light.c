@@ -289,10 +289,14 @@ static ssize_t light_circle_show(struct device *dev,
 #elif defined(CONFIG_SEC_R3Q_PROJECT)
 	return snprintf(buf, PAGE_SIZE, "27.1 6.2 2.4\n");
 #elif defined(CONFIG_SEC_R5Q_PROJECT)
+#if defined(CONFIG_MACH_R5Q_USA_OPEN)
+	return snprintf(buf, PAGE_SIZE, "45.4 5.1 2.4\n");
+#else
 	if (sec_hw_rev() < 6)
 		return snprintf(buf, PAGE_SIZE, "31.9 13.8 2.4\n");
 	else
 		return snprintf(buf, PAGE_SIZE, "45.4 5.1 2.4\n");
+#endif
 #elif defined(CONFIG_SEC_BLOOMQ_PROJECT)
 	return snprintf(buf, PAGE_SIZE, "34.1 11.6 2.4\n");
 #else

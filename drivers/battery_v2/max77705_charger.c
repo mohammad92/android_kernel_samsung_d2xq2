@@ -421,10 +421,16 @@ static int max77705_get_charging_health(struct max77705_charger_data *charger)
 			charger->misalign_cnt = 0;
 		
 		if (charger->misalign_cnt >= 3) {
-			pr_info("%s: invalid WCIN, Misalign occurs!\n", __func__);
-			value.intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
-			psy_do_property(charger->pdata->wireless_charger_name,
-				set, POWER_SUPPLY_PROP_STATUS, value);
+			psy_do_property("battery",
+				get, POWER_SUPPLY_PROP_STATUS, value);
+			if (value.intval != POWER_SUPPLY_STATUS_FULL) {
+				pr_info("%s: invalid WCIN, Misalign occurs!\n", __func__);
+				value.intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+				psy_do_property(charger->pdata->wireless_charger_name,
+					set, POWER_SUPPLY_PROP_STATUS, value);
+			} else {
+				charger->misalign_cnt = 0;
+			}
 		}
 	}
 
@@ -651,6 +657,7 @@ static void max77705_set_charge_current(struct max77705_charger_data *charger,
 		return;
 	}
 #endif
+	mutex_lock(&charger->charger_mutex);
 
 	fast_charging_current =
 		(fast_charging_current > 3150) ? 3150 : fast_charging_current;
@@ -659,6 +666,8 @@ static void max77705_set_charge_current(struct max77705_charger_data *charger,
 
 	max77705_update_reg(charger->i2c, MAX77705_CHG_REG_CNFG_02,
 		reg_data, MAX77705_CHG_CC);
+
+	mutex_unlock(&charger->charger_mutex);
 
 	pr_info("[%s] REG(0x%02x) DATA(0x%02x), CURRENT(%d)\n", __func__,
 		MAX77705_CHG_REG_CNFG_02, reg_data, fast_charging_current);

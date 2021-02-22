@@ -123,6 +123,7 @@ static const char *dev_to_str(muic_attached_dev_t n)
 	ENUM_STR(ATTACHED_DEV_AFC_CHARGER_9V_MUIC, ret);
 	ENUM_STR(ATTACHED_DEV_AFC_CHARGER_ERR_V_MUIC, ret);
 	ENUM_STR(ATTACHED_DEV_AFC_CHARGER_ERR_V_DUPLI_MUIC, ret);
+	ENUM_STR(ATTACHED_DEV_AFC_CHARGER_DISABLED_MUIC, ret);
 	ENUM_STR(ATTACHED_DEV_QC_CHARGER_PREPARE_MUIC, ret);
 	ENUM_STR(ATTACHED_DEV_QC_CHARGER_5V_MUIC, ret);
 	ENUM_STR(ATTACHED_DEV_QC_CHARGER_ERR_V_MUIC, ret);
@@ -2179,6 +2180,8 @@ static irqreturn_t s2mu106_muic_attach_isr(int irq, void *data)
 	det_ret = s2mu106_muic_detect_dev_mrid_adc(muic_data);
 #endif
 attach_done:
+	if (muic_data->new_dev == ATTACHED_DEV_TA_MUIC)
+		msleep(60);
 	s2mu106_muic_handle_attached_dev(muic_data);
 
 attach_skip:

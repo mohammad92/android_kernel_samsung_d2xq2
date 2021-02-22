@@ -242,6 +242,9 @@ int max77705_process_check_accessory(void *data)
 				acc_type = CCIC_DOCK_NEW;
 				break;
 			}
+		} else {
+			msg_maxim("unknown device connected.");
+			acc_type = CCIC_DOCK_NEW;
 		}
 		usbpd_data->acc_type = acc_type;
 	} else
@@ -1071,7 +1074,7 @@ void max77705_set_usb_phy_completion(int kind)
 
 	usbpd_data = g_usbc_data;
 
-	if (!usbpd_data)
+	if (!usbpd_data || !usbpd_data->max77705 || !usbpd_data->max77705->cc_booting_complete)
 		return;
 
 	if (kind == 0) {
